@@ -1,0 +1,5 @@
+第二章作业
+1./etc/profile和.profile
+2.PATH使脚本和命令可以直接执行，MANPARH可以查询到命令的帮助信息
+3.指定运行的shell的名称。
+4.可以通过man命令来来访问手册页。
