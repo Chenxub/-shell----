@@ -1,4 +1,5 @@
-µÚÒ»ÕÂ×÷Òµ
-1.¼òµ¥ÃüÁî£º$ls£¬¸´ÔÓÃüÁî£º$ls -1¡¢$echo "hello world"£¬¸´ºÏÃüÁî£º$date;uptime; 
-2.¼ÓÉÏ·ÖºÅshell»áÈÏÎªÊÇÒ»¸ö¸´ºÏÃüÁîÔÚÖ´ÐÐ£¬Ö´ÐÐÍêµÚÒ»¸öºóshell»áÊÔÍ¼Ö´ÐÐÏÂÒ»ÌõÃüÁî£¬¶øÕâÖÖÇé¿öÏÂÃ»ÓÐÊ£ÓàµÄÃüÁîÀ´Ö´ÐÐ£¬¾Í»á·µ»ØÌáÊ¾·û£¬ËùÒÔÁ½¸öÃüÁîµÄÊä³ö»áÒ»Ñù¡£ 
-3.Á½ÖÖÖ÷ÒªµÄshellÀàÐÍÊÇBourne£¨ÓÐsh,ksh,zsh,bash£©ºÍC£¨ÓÐcsh,tcsh£©
+ç¬¬ä¸€ç« ä½œä¸š
+1.ç®€å•å‘½ä»¤ï¼š$lsï¼Œå¤æ‚å‘½ä»¤ï¼š$ls -1ã€$echo "hello world"ï¼Œå¤åˆå‘½ä»¤ï¼š$date;uptime; 
+2.åŠ ä¸Šåˆ†å·shellä¼šè®¤ä¸ºæ˜¯ä¸€ä¸ªå¤åˆå‘½ä»¤åœ¨æ‰§è¡Œï¼Œæ‰§è¡Œå®Œç¬¬ä¸€ä¸ªåŽshellä¼šè¯•å›¾æ‰§è¡Œä¸‹ä¸€æ¡å‘½ä»¤ï¼Œ
+  è€Œè¿™ç§æƒ…å†µä¸‹æ²¡æœ‰å‰©ä½™çš„å‘½ä»¤æ¥æ‰§è¡Œï¼Œå°±ä¼šè¿”å›žæç¤ºç¬¦ï¼Œæ‰€ä»¥ä¸¤ä¸ªå‘½ä»¤çš„è¾“å‡ºä¼šä¸€æ ·ã€‚ 
+3.ä¸¤ç§ä¸»è¦çš„shellç±»åž‹æ˜¯Bourneï¼ˆæœ‰sh,ksh,zsh,bashï¼‰å’ŒCï¼ˆæœ‰csh,tcshï¼‰
