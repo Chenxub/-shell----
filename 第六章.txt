@@ -1,0 +1,5 @@
+第六章作业
+1.文件类型：字符设备文件，常规文件，目录，常规文件。
+宿主：bin，root，bin，root。权限分别是：rw,r,rwx,rs。
+组：sys;sys;bin;bin。权限分别是：r,r,rx。
+其他的权限分别是：无，r，rx。

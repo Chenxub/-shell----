@@ -1,0 +1,14 @@
+第四章作业
+1.绝对路径：a,d
+  相对路径：b,c
+
+2.a: /usr/local
+  b: /usr/local/bin
+  c：/usr/tmp
+  d: /usr/tmp
+
+3.cp -r /usr/local /opt/pgms
+
+4.mv /usr/local /opt/pgms
+
+5.不能，不是空目录。使用rm -r ./backup可以删除
