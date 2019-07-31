@@ -1,0 +1,86 @@
+第十章作业
+1.echo "It's <party> time!"
+
+2.echo "$USER owes     \$$DEBT"
+
+
+第十一章作业
+1.第一条是若存在该文件就执行，
+第二条是若该文件可执行就执行。
+2.Your binaries are stored in your home directory.
+
+3.
+if [ -d /usr/bin ] ; then
+	echo "/usr/bin is a directory."
+elif [ -h /usr/bin ] ; then
+	echo "/usr/bin is a link."
+fi
+
+4.
+case "$ANS" in
+	[yY]|[Yy][Ee][Ss])	ANS="y" ;;
+	*)			ANS="n" ;;
+esac
+
+
+第十二章作业
+1.
+把
+x=0
+while [ $x -lt 10 ]
+do
+	echo "$x \c"
+	y=$(($x-1))
+	x=$(($x+1))
+	while [ $y -ge 0 ] ; do
+		y=$(($y-1))
+		echo "$y \c"
+	done
+	echo
+done
+改成
+#!/bin/sh
+x=0
+while [ $x -lt 10 ]
+do
+        y=0
+        while [ $y -le $x ] ; do
+                printf "$y "
+                y=$(($y+1))
+        done
+        echo
+        x=$(($x+1))
+done
+输出：
+0 
+0 1 
+0 1 2 
+0 1 2 3 
+0 1 2 3 4 
+0 1 2 3 4 5 
+0 1 2 3 4 5 6 
+0 1 2 3 4 5 6 7 
+0 1 2 3 4 5 6 7 8 
+0 1 2 3 4 5 6 7 8 9 
+
+
+2.
+#!/bin/sh
+select FILE in * "Exit Programe"
+do
+        if [ -z "$FILE" ] ; then continue ; fi
+
+        if [ "$FILE" == "Exit Programe" ] ; then break ; fi
+
+        if [ ! -f "$FILE" ] ; then
+                echo "please input correct file name"
+                continue
+        fi
+        echo "your file is: "
+        cat $FILE
+done
+
+
+
+
+
