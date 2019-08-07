@@ -1,0 +1,179 @@
+1.判断一个命令是否在$PATH的目录中，存在的话打印绝对路径，不存在打印“not found”：
+[root@localhost ~]# findcommand() {
+>   OLDIFS="$IFS"
+>   IFS=:
+>   RT=1
+>   for  i in $PATH
+>   do
+>     if [ -x "$i/$1" ] ; then
+>       echo "$i/$1";RT=0;break
+>     fi
+>   done
+>   IFS="$OLDIFS"
+>   if [ "$RT" == "0" ] ; then
+>     return 0
+>   else
+>     echo "not found"
+>     return 1
+>   fi
+> }
+[root@localhost ~]# findcommand ls
+/bin/ls
+[root@localhost ~]# findcommand lsd
+not found
+
+2.跳转到指定的目录并打印绝对路径“change to `pwd`”，各级都有错误检查。
+[root@localhost ~]# cdpwd() {
+>   USAGE="Usage: cdpwd [pathname]"
+>   if [ "$#" != "1" ] ; then
+>     echo "$USAGE" >&2
+>     return 1
+>   fi
+>   if [ -d "$1" ] ; then
+>     cd "$1"
+>     if [ "$?" == "0" ] ; then
+>       echo "change to `pwd`"
+>       return 0
+>     else
+>       echo "failed." >&2
+>       return 1
+>     fi
+>   else
+>     echo "$1 is not a dir." >&2
+>     return 1
+>   fi
+> }
+[root@localhost ~]# cdpwd tmp
+change to /root/tmp
+
+3.1创建指定目录（包括父目录），转到并打印全路径，各级都有错误检查。
+[root@localhost ~]# mkdirpwd() {
+>   USAGE="Usage: mkdirpwd [pathname]"
+>     if [ "$#" != "1" ] ; then
+>     echo "$USAGE" >&2
+>     return 1
+>   fi
+>   mkdir -p $1 >/dev/null 2>&1
+>   if [ $? -eq 0 ] ; then
+>     cd $1
+>     if [ $? -eq 0 ] ; then
+>       echo "change to `pwd`"
+>       return 0
+>     else
+>       echo "failed on cd." >&2
+>       return 1
+>     fi
+>   else
+>     echo "failef on mkdir." >&2
+>     return 1
+>   fi
+> }
+[root@localhost ~]# mkdirpwd ttp
+change to /root/ttp
+[root@localhost ttp]# mkdirpwd hh/ttp/tmp
+change to /root/ttp/hh/ttp/tmp
+[root@localhost tmp]# mkdirpwd dsfa safda
+Usage: mkdirpwd [pathname]
+
+3.2不使用mkdir -p完成3.1的要求。
+[root@localhost ~]# mkdirpwd() {
+>   USAGE="Usage: mkdirpwd [pathname]"
+>   OLDIFS="$IFS"
+>   IFS=/
+>   if [ "$#" != "1" ] ; then
+>     echo "$USAGE" >&2
+>     return 1
+>   fi
+>   for i in $1
+>   do
+>     if [ ! -d $i ] ; then
+>       mkdir $i >/dev/null 2>&1
+>       if [ $? -eq 0 ] ; then
+>         cd $i
+>         if [ $? -ne 0 ] ; then
+>           echo "failed on cd." >&2
+>           return 1
+>         fi
+>       else
+>         echo "failef on mkdir." >&2
+>         return 1
+>       fi
+>     else
+>       cd $i
+>       if [ $? -ne 0 ] ; then
+>         echo "failed on cd." >&2
+>         return 1
+>       fi
+>     fi
+>   done
+>   IFS="$OLDIFS"
+>   echo "change to `pwd`"
+> }
+[root@localhost ~]# mkdirpwd ppt
+change to /root/ppt
+
+4.readPass读两次密码并确认两次都是一样的。
+[root@localhost ~]# vim test.readPass
+#!/bin/sh
+readPass () {
+  PASS=""
+  echo -n "Enter Password: "
+  stty -echo
+  read PASS
+  stty echo
+  echo
+  PASS2=""
+  echo -n "Enter Password Again: "
+  stty -echo
+  read PASS2
+  stty echo
+  echo
+}
+readPass
+echo Password is $PASS and $PASS2
+if [ "$PASS" == "$PASS2" ];then
+  echo "right!"
+else
+  echo "Two different inputs!"
+fi
+
+[root@localhost ~]# ./test.readPass  
+Enter Password: 
+Enter Password Again: 
+Password is 123 and 123
+right!
+[root@localhost ~]# ./test.readPass 
+Enter Password: 
+Enter Password Again: 
+Password is 123 and 234
+Two different inputs!
+
+5.
+[root@localhost ~]# response() {
+>   USAGE="Usage:response [-prompt]"
+>   if [ $# -ne 1 ];then
+>     echo "$USAGE"
+>     return 1
+>   fi
+>   RESPONSE=
+>   while [ -z "$RESPONSE" ]
+>   do
+>     echo -n "$1: "
+>     read RESPONSE
+>   done
+>   export RESPONSE
+> }
+[root@localhost ~]# response
+Usage:response [-prompt]
+
+[root@localhost ~]# response -name
+-name: chenxubin
+
+[root@localhost ~]# echo $RESPONSE
+chenxubin
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+第十三章作业
+1.脚本改成如下：
+#!/bin/sh
+USAGE="Usage: `basename $0` [-c|-t|-x] [files|directories]"
+
+if [ $# -lt 2 ] ; then
+        echo "$USAGE" ;
+        exit 1 ;
+fi
+
+case "$1" in
+        -t) shift
+        TARGES="-tvf";
+        for i in "$@";
+        do
+                if [ -f "$i" ] ; then
+                 FILES=`tar $TARGES "$i" 2>/dev/null`
+                 if [ $? -eq 0 ] ; then
+                  echo ; echo "$i" ; echo "$FILES"
+                 else
+                  echo "ERROR: $i not a tar file."
+                 fi
+                else
+                 echo "ERROR: $i not a file."
+                fi
+        done
+        ;;
+        -x) shift
+        TARGES="-xvf";
+        for i in "$@"
+        do
+                if [ -f "$i" ] ; then
+                 FILES=`tar $TARGES "$i" 2>/dev/null`
+                 if [ $? -eq 0 ] ; then
+                  echo ; echo "$i" ; echo "$FILES"
+                 else
+                  echo "ERROR: $i not a tar file."
+                 fi
+                else
+                 echo "ERROR: $i not a file."
+                fi
+        done
+        ;;
+        -c) shift
+                TARGES="-cvf" ;
+                tar $TARGES archive.tar "$@"
+                ;;
+        -*) echo "$USAGE"
+                exit 0
+                ;;
+esac
+exit $?
+
+2.
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+1.[root@localhost ~]# seds () {
+>   if [ $# -lt 2 ];then
+>     echo "Usage: seds pattern files"
+>     return 1
+>   fi
+>   word=$1;shift
+>   for file in $@
+>   do
+>     if [ -f $file ];then
+>       sed -n "/$word/p" $file
+>     else
+>       echo "Error: $file is not a file."
+>       return 1
+>     fi
+>   done
+>   return 0
+> }
+[root@localhost ~]# seds bin
+Usage: seds pattern files
+[root@localhost ~]# seds bin lspids
+#!/bin/sh
+  PSCMD="/bin/ps auwx"
+[root@localhost ~]# seds bin lspids test.cdpwd
+#!/bin/sh
+  PSCMD="/bin/ps auwx"
+#!/bin/sh
+
+2.
+# uptime | sed  's/ /\n/g' | sed -n '12,16p' | sed ':label;N;s/\n/ /;b label'
+->  load average: 0.00, 0.00, 0.00
+
+3.
+# df -k | sed -n '/^\//p'
+/dev/sda5       17414980 1064616  15465732   7% /
+/dev/sda1         198337   27809    160288  15% /boot
+/dev/sda2        2015824   35772   1877652   2% /home
+
+4.
+# ls -l | sed -e 's/ [0-9].*:[0-9][0-9]//g; /^[^-]/d'
+-rw-------. anaconda-ks.cfg
+-rwxr-xr-x. diaoyong
+-rw-r--r--. install.log
+-rw-r--r--. install.log.syslog
+-rwxr-xr-x. lspids
+-rwxr-xr-x. lspids.bak
+-rw-r--r--. response

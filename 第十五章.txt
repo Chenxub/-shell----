@@ -1,0 +1,62 @@
+1.
+[root@localhost ~]# lspids () {
+>   USAGE="Usage: lspids [-h] process"
+>   if [ -z "$1" ];then
+>     echo $USAGE
+>     return 1
+>   fi
+>   if [ "$1" == "-h" ];then
+>     if [ -z "$2" ];then echo $USAGE;
+>     else /bin/ps aux 2>/dev/null | head -1
+>          /bin/ps aux 2>/dev/null | grep "$2" | grep -v grep
+>     fi
+>   else
+>     /bin/ps aux 2>/dev/null | grep "$1" | grep -v grep
+>   fi
+> }
+[root@localhost ~]# lspids -h
+Usage: lspids [-h] process
+[root@localhost ~]# lspids ssh
+root      1125  0.0  0.1  66604  1236 ?        Ss   Jul24   0:00 /usr/sbin/sshd
+root     22521  0.0  0.3 100348  4028 ?        Ss   09:19   0:01 sshd: root@pts/0 
+[root@localhost ~]# lspids -h ssh
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root      1125  0.0  0.1  66604  1236 ?        Ss   Jul24   0:00 /usr/sbin/sshd
+root     22521  0.0  0.3 100348  4028 ?        Ss   09:19   0:01 sshd: root@pts/0 
+
+2.
+[root@localhost ~]# lspids () {
+>   USAGE="Usage: lspids [-h|-s] process"
+>   HEADER=flase
+>   SORT=flase
+>   PSCMD="/bin/ps auwx"
+>   SORTCMD="sort -rn -k 2,2"
+>   for OPT in $@
+>   do
+>     case "$OPT" in
+>       -h)HEADER=ture;shift;;
+>       -s)SORT=ture;shift;;
+>       -*)echo $USAGE;return 1;;
+>     esac
+>   done
+>   if [ -z "$1" ];then
+>     echo $USAGE
+>     return 1
+>   fi
+>   if [ "$HEADER" == "ture" ];then
+>     $PSCMD | head -1
+>   fi
+>   if [ "$SORT" == "ture" ];then
+>     $PSCMD 2>/dev/null | grep ssh | grep -v grep | $SORTCMD
+>   else
+>     $PSCMD 2>/dev/null | grep ssh | grep -v grep
+>   fi
+> }
+[root@localhost ~]# lspids -h ssh   
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root      1125  0.0  0.1  66604  1236 ?        Ss   Jul24   0:00 /usr/sbin/sshd
+root     22521  0.0  0.3 100348  4028 ?        Ss   09:19   0:03 sshd: root@pts/0 
+[root@localhost ~]# lspids -h -s ssh
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root     22521  0.0  0.3 100348  4028 ?        Ss   09:19   0:03 sshd: root@pts/0 
+root      1125  0.0  0.1  66604  1236 ?        Ss   Jul24   0:00 /usr/sbin/sshd

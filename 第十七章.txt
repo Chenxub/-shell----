@@ -1,0 +1,90 @@
+1.#!/bin/sh
+if [ $# -lt 1 ];then
+  echo "Usage: `basename $0` files"
+  exit 1
+fi
+awk '{
+  for (i=NF;i>0;i--){
+    printf("%s\t",$i);
+    }
+  printf("\n");
+}' $@
+
+2. 
+#!/bin/sh
+if [ $# -ne 1 ];then
+  echo "Usage: `basename $0` file"
+  exit 1
+fi
+awk '
+  BEGIN {FS=":"}
+  $1 == "B" {MONEY=$NF;next;}
+  $1 == "D" {MONEY+=$NF;printf("%s %s\n",$2,MONEY);next;}
+  $1 == "C" {MONEY-=$NF;printf("%s %s\n",$2,MONEY);next;}
+  $1 == "W" {MONEY-=$NF;printf("%s %s\n",$2,MONEY);next;}
+ ' $@
+# ./calculate account.txt 
+ 10/24/97 1000
+ 10/24/97 900
+ 10/30/97 878.57
+ 10/30/97 867.23
+ 11/02/97 825.78
+ 11/04/97 478.55
+ 11/06/97 1165.89
+ 11/10/97 965.89
+
+3.
+#!/bin/sh
+if [ $# -ne 1 ];then
+  echo "Usage: `basename $0` file"
+  exit 1
+fi
+awk '
+  BEGIN {FS=":"}
+  $1 == "B" {MONEY=$NF;next;}
+  $1 == "D" {MONEY+=$NF;printf("%s %s\n",$2,MONEY);next;}
+  $1 == "C" {MONEY-=$NF;printf("%s %s\n",$2,MONEY);next;}
+  $1 == "W" {MONEY-=$NF;printf("%s %s\n",$2,MONEY);next;}
+  END {printf(" -\n Total "MONEY"\n")}
+ ' $@
+                                                 
+# ./calculate account.txt 
+ 10/24/97 1000
+ 10/24/97 900
+ 10/30/97 878.57
+ 10/30/97 867.23
+ 11/02/97 825.78
+ 11/04/97 478.55
+ 11/06/97 1165.89
+ 11/10/97 965.89
+ -
+ Total 965.89
+
+4.
+#!/bin/sh
+if [ $# -ne 1 ];then
+  echo "Usage: `basename $0` file"
+  exit 1
+fi
+awk '
+  BEGIN {FS=":"}
+  $1 == "B" {MONEY=$NF;next;}
+  $1 == "D" {MONEY+=$NF;printf("%s %s\n",$2,MONEY);next;}
+  $1 == "C" {MONEY-=$NF;printf("%s %s",$2,MONEY);
+    if(MONEY < 500){printf(" * Below Min. Balance")};printf("\n");next;}
+  $1 == "W" {MONEY-=$NF;printf("%s %s",$2,MONEY);
+    if(MONEY < 500){printf(" * Below Min. Balance")};printf("\n");next;}
+  END {printf(" -\n Total "MONEY"\n")}
+ ' $@
+
+# ./calculate account.txt 
+ 10/24/97 1000
+ 10/24/97 900
+ 10/30/97 878.57
+ 10/30/97 867.23
+ 11/02/97 825.78
+ 11/04/97 478.55 * Below Min. Balance
+ 11/06/97 1165.89
+ 11/10/97 965.89
+ -
+ Total 965.89
